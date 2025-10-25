@@ -1,0 +1,15 @@
+# Folders extracted from main repository
+# Source: /home/bravoprochu/bp-nx
+# Generated: Sat Oct 25 20:48:54 CEST 2025
+#
+# SYNC MODE PREFIX:
+#   s: or sync: = bidirectional sync (changes push back to main)
+#   c: or copy: = one-way copy only (won't sync back to main)
+#
+# Examples:
+#   s:libs/lidl              - synced folder
+#   c:libs/shared/util       - copy-only folder
+#   sync:package.json        - synced file
+#   copy:nx.json             - copy-only file
+
+s:scripts

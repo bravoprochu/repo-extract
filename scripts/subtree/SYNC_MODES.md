@@ -21,7 +21,7 @@ Add a prefix to each line in `folders-to-extract.txt`:
 # folders-to-extract.txt
 
 # Active development - stay in sync
-s:libs/lidl
+s:libs/project-one
 s:libs/shared/ngrx
 sync:package.json
 
@@ -59,9 +59,9 @@ Use for folders/files you want as a starting point but will customize independen
 ### Example 1: Feature Development
 
 ```
-# You're building a Lidl app that uses shared Angular components
+# You're building a project-one app that uses shared Angular components
 
-s:libs/lidl                        # Your active work
+s:libs/project-one                        # Your active work
 c:libs/shared/common-controls      # Copy once, then customize independently
 c:libs/shared/common-styles        # Copy once, then customize independently
 s:package.json                     # Keep in sync
@@ -70,7 +70,7 @@ c:tsconfig.base.json               # Copy once, then customize
 
 **Benefits:**
 
-- ✅ Your Lidl app stays in sync with main
+- ✅ Your project-one app stays in sync with main
 - ✅ You can freely modify copied libraries without affecting main
 - ✅ Simple mental model: synced items stay in sync, copied items are yours
 
@@ -99,7 +99,7 @@ copy:nx.json                       # Copy once, customize as needed
 
 ```
 Folders to sync:
-  - libs/lidl
+  - libs/project-one
   - package.json
 ```
 
@@ -114,7 +114,7 @@ Folders to sync:
 
 ```
 Folders to sync back to main:
-  - libs/lidl
+  - libs/project-one
   - package.json
 ```
 
@@ -133,7 +133,7 @@ If you have an existing `folders-to-extract.txt` without sync mode prefixes:
 **Old format (still works):**
 
 ```
-libs/lidl
+libs/project-one
 libs/shared/util
 package.json
 ```
@@ -143,7 +143,7 @@ package.json
 **New format (with explicit modes):**
 
 ```
-s:libs/lidl
+s:libs/project-one
 c:libs/shared/util
 sync:package.json
 ```
@@ -159,11 +159,11 @@ sync:package.json
 
 ```bash
 # Before
-libs/lidl
+libs/project-one
 libs/shared/common-controls
 
 # After - add prefixes based on your needs
-s:libs/lidl
+s:libs/project-one
 c:libs/shared/common-controls
 ```
 
@@ -201,7 +201,7 @@ A: Don't include it in `folders-to-extract.txt` at all. Copy-only mode still rec
 A: Yes! `s:`, `sync:`, `c:`, and `copy:` can all be mixed.
 
 ```
-s:libs/lidl              # Short form
+s:libs/project-one              # Short form
 sync:libs/shared/ngrx    # Long form
 c:package.json           # Short form
 copy:nx.json             # Long form

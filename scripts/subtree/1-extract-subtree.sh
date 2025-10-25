@@ -24,7 +24,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo ""
     echo "Enter folder depth to scan:"
     echo "  1 = top level only (e.g., libs/, src/)"
-    echo "  2 = one level deep (e.g., libs/lidl/, libs/shared/)"
+    echo "  2 = one level deep (e.g., libs/project-one/, libs/shared/)"
     echo "  3 = two levels deep (e.g., libs/shared/util/, libs/shared/auth/)"
     echo "  etc."
     echo ""
@@ -60,7 +60,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 #   c: or copy: = one-way copy only (won't sync back to main repo)
 #
 # FORMAT EXAMPLES:
-#   s:libs/lidl              - synced folder (default)
+#   s:libs/project-one              - synced folder (default)
 #   c:libs/shared/util       - copy-only folder
 #   sync:package.json        - synced file
 #   copy:nx.json             - copy-only file
@@ -276,7 +276,7 @@ echo "#   s: or sync: = bidirectional sync (changes push back to main)" >> "$NEW
 echo "#   c: or copy: = one-way copy only (won't sync back to main)" >> "$NEW_REPO_PATH/folders-to-extract.txt"
 echo "#" >> "$NEW_REPO_PATH/folders-to-extract.txt"
 echo "# Examples:" >> "$NEW_REPO_PATH/folders-to-extract.txt"
-echo "#   s:libs/lidl              - synced folder" >> "$NEW_REPO_PATH/folders-to-extract.txt"
+echo "#   s:libs/project-one              - synced folder" >> "$NEW_REPO_PATH/folders-to-extract.txt"
 echo "#   c:libs/shared/util       - copy-only folder" >> "$NEW_REPO_PATH/folders-to-extract.txt"
 echo "#   sync:package.json        - synced file" >> "$NEW_REPO_PATH/folders-to-extract.txt"
 echo "#   copy:nx.json             - copy-only file" >> "$NEW_REPO_PATH/folders-to-extract.txt"

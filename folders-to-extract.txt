@@ -7,7 +7,7 @@
 #   c: or copy: = one-way copy only (won't sync back to main)
 #
 # Examples:
-#   s:libs/lidl              - synced folder
+#   s:libs/project-one              - synced folder
 #   c:libs/shared/util       - copy-only folder
 #   sync:package.json        - synced file
 #   copy:nx.json             - copy-only file

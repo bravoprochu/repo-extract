@@ -54,11 +54,11 @@ Do you want this folder to stay in sync with main repo?
 
 ## Real-World Example
 
-**Scenario:** Building Lidl app, forking some shared components
+**Scenario:** Building project-one app, forking some shared components
 
 ```
-s:libs/lidl                        ← Your app code (stays in sync)
-s:libs/lidl-be-core-api-feature    ← Your backend (stays in sync)
+s:libs/project-one                        ← Your app code (stays in sync)
+s:libs/project-one-be-core-api-feature    ← Your backend (stays in sync)
 c:libs/shared/common-controls      ← Copy once, customize freely
 c:libs/shared/common-styles        ← Copy once, customize freely
 sync:package.json                  ← Keep in sync
@@ -67,7 +67,7 @@ copy:nx.json                       ← Copy once, customize
 
 **Result:**
 
-- ✅ Your Lidl code syncs with main
+- ✅ Your project-one code syncs with main
 - ✅ Copied libraries are yours to modify
 - ✅ Simple: synced items sync, copied items are independent
 

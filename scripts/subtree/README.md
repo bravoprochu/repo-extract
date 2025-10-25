@@ -9,7 +9,7 @@ This toolset allows you to:
 - Extract specific folders into a new repository
 - Sync changes bidirectionally between repos
 - Easily add more folders anytime
-- **Works with ANY Git repository** (not hardcoded to bp-nx)
+- **Works with ANY Git repository**
 
 **Important Note:**
 These scripts use file-based synchronization rather than true git subtree operations. This approach:
@@ -35,7 +35,7 @@ Control how each folder/file syncs with **sync mode prefixes**:
 # folders-to-extract.txt
 
 # Synced folders - stay in sync with main repo
-s:libs/lidl
+s:libs/project-one
 s:libs/shared/ngrx
 sync:package.json
 
@@ -50,7 +50,7 @@ copy:tsconfig.base.json
 
 **Sync Mode (`s:`)** - Use for folders you actively develop:
 
-- Your project-specific code (`libs/lidl`)
+- Your project-specific code (`libs/project-one`)
 - Shared utilities you maintain
 - Config files you customize and want to keep in sync
 
@@ -91,7 +91,7 @@ cd /path/to/your/main/repo
 1. Select folders interactively? **y**
 2. Enter folder paths one by one:
    ```
-   Folder path: libs/lidl
+   Folder path: libs/project-one
    Folder path: libs/shared/util
    Folder path: package.json
    Folder path: [Enter to finish]
@@ -157,7 +157,7 @@ nano folders-to-extract.txt
 Add new folders:
 
 ```
-libs/lidl
+libs/project-one
 libs/shared/util
 libs/shared/new-folder    ← Add this
 package.json
@@ -257,8 +257,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'libs/myapp/**'
-      - 'libs/shared/util/**'
+      - "libs/myapp/**"
+      - "libs/shared/util/**"
 jobs:
   sync:
     runs-on: ubuntu-latest

@@ -62,7 +62,7 @@ copy:tsconfig.base.json
 
 ### Behavior
 
-**During Extraction (`1-extract-subtree.sh`):**
+**During Extraction (`1-extract-repo.sh`):**
 
 - Both `sync` and `copy` items are copied to new repo
 - Sync modes are saved in `folders-to-extract.txt`
@@ -83,7 +83,7 @@ copy:tsconfig.base.json
 
 ```bash
 cd /path/to/your/main/repo
-./scripts/subtree/1-extract-subtree.sh
+./scripts/repo-extract/1-extract-repo.sh
 ```
 
 **Interactive prompts:**
@@ -96,7 +96,7 @@ cd /path/to/your/main/repo
    Folder path: package.json
    Folder path: [Enter to finish]
    ```
-3. Path for new repository: `~/my-subtree-project`
+3. Path for new repository: `~/my-extracted-project`
 
 **Done!** The script will:
 
@@ -111,26 +111,26 @@ If you have `folders-to-extract.txt` already:
 
 ```bash
 cd /path/to/your/main/repo
-./scripts/subtree/1-extract-subtree.sh
+./scripts/repo-extract/1-extract-repo.sh
 ```
 
 Select **n** for interactive mode, and it will use your existing file.
 
 ## Daily Workflow
 
-### In Subtree Repository
+### In Extracted Repository
 
 **Pull changes from main repo:**
 
 ```bash
-cd ~/my-subtree-project
+cd ~/my-extracted-project
 ./2-sync-from-main.sh
 ```
 
 **Push your changes to main repo:**
 
 ```bash
-cd ~/my-subtree-project
+cd ~/my-extracted-project
 git add .
 git commit -m "My changes"
 ./3-sync-to-main.sh
@@ -138,7 +138,7 @@ git commit -m "My changes"
 
 ### In Main Repository
 
-After someone syncs from subtree:
+After someone syncs from extracted repo:
 
 ```bash
 cd /path/to/your/main/repo
@@ -147,10 +147,10 @@ git pull
 
 ## Adding More Folders
 
-Edit `folders-to-extract.txt` in your subtree repo:
+Edit `folders-to-extract.txt` in your extracted repo:
 
 ```bash
-cd ~/my-subtree-project
+cd ~/my-extracted-project
 nano folders-to-extract.txt
 ```
 
@@ -171,19 +171,19 @@ Sync:
 
 ## Files
 
-- **`1-extract-subtree.sh`** - Creates subtree repo (run once from main repo)
-- **`2-sync-from-main.sh`** - Pull updates (run from subtree repo)
-- **`3-sync-to-main.sh`** - Push changes (run from subtree repo)
+- **`1-extract-repo.sh`** - Creates extracted repo (run once from main repo)
+- **`2-sync-from-main.sh`** - Pull updates (run from extracted repo)
+- **`3-sync-to-main.sh`** - Push changes (run from extracted repo)
 - **`folders-to-extract.txt`** - List of synced folders (auto-generated)
 
 ## Team Workflow
 
-### Option 1: Subtree Repo Only (Recommended)
+### Option 1: Extracted Repo Only (Recommended)
 
-Most developers work only in the subtree repository:
+Most developers work only in the extracted repository:
 
 ```bash
-git clone <subtree-repo-url>
+git clone <extracted-repo-url>
 # Work normally, no need for main repo!
 ```
 
@@ -205,14 +205,14 @@ You bridge the two repos by running sync scripts when needed, or automate with C
 ```bash
 # 1. Extract from main repo
 cd ~/my-main-repo
-./scripts/subtree/1-extract-subtree.sh
+./scripts/repo-extract/1-extract-repo.sh
 
 # Choose interactive mode
 # Enter folders: libs/myapp, libs/shared/util, package.json
-# New repo path: ~/myapp-subtree
+# New repo path: ~/myapp-extracted
 
 # 2. Check the result
-cd ~/myapp-subtree
+cd ~/myapp-extracted
 ls -la
 # → libs/myapp/, libs/shared/util/, package.json
 # → folders-to-extract.txt, 2-sync-from-main.sh, 3-sync-to-main.sh
@@ -234,25 +234,25 @@ git pull
 ## Workflow Diagram
 
 ```
-Main Repo                        Subtree Repo
+Main Repo                        Extracted Repo
 ├── libs/myapp/            ←→    ├── libs/myapp/
 ├── libs/shared/util/      ←→    ├── libs/shared/util/
 ├── libs/shared/other/            ├── package.json
 ├── package.json           ←→    └── [sync scripts]
 └── [many other folders]
 
-./2-sync-from-main.sh: Pull updates from main → subtree
-./3-sync-to-main.sh:   Push changes from subtree → main
+./2-sync-from-main.sh: Pull updates from main → extracted
+./3-sync-to-main.sh:   Push changes from extracted → main
 ```
 
 ## Advanced: CI/CD Automation
 
 ### Auto-sync on push (GitHub Actions example)
 
-**In main repo** `.github/workflows/sync-to-subtree.yml`:
+**In main repo** `.github/workflows/sync-to-extracted.yml`:
 
 ```yaml
-name: Sync to Subtree
+name: Sync to Extracted
 on:
   push:
     branches: [main]
@@ -264,12 +264,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Push to subtree repo
+      - name: Push to extracted repo
         run: |
-          # Use git subtree push or custom script
+          # Use custom sync script
 ```
 
-**In subtree repo** `.github/workflows/sync-to-main.yml`:
+**In extracted repo** `.github/workflows/sync-to-main.yml`:
 
 ```yaml
 name: Sync to Main
@@ -298,11 +298,11 @@ jobs:
 
 ### "Not a git repository"
 
-Run sync scripts FROM the subtree repository, not main repo.
+Run sync scripts FROM the extracted repository, not main repo.
 
 ### "Remote 'main-repo' not found"
 
-The subtree repo wasn't created with `1-extract-subtree.sh`. Manually add:
+The extracted repo wasn't created with `1-extract-repo.sh`. Manually add:
 
 ```bash
 git remote add main-repo /path/to/main/repo
@@ -310,7 +310,7 @@ git remote add main-repo /path/to/main/repo
 
 ### Merge conflicts
 
-1. Resolve conflicts in subtree repo
+1. Resolve conflicts in extracted repo
 2. `git add <files>`
 3. `git commit`
 4. Continue syncing
@@ -318,24 +318,24 @@ git remote add main-repo /path/to/main/repo
 ### Want to start over?
 
 ```bash
-rm -rf ~/my-subtree-project
+rm -rf ~/my-extracted-project
 cd ~/my-main-repo
-./scripts/subtree/1-extract-subtree.sh
+./scripts/repo-extract/1-extract-repo.sh
 ```
 
 ## FAQ
 
 **Q: Do all devs need both repos?**  
-A: No! Most devs only need the subtree repo. Only you (maintainer) or CI/CD needs both.
+A: No! Most devs only need the extracted repo. Only you (maintainer) or CI/CD needs both.
 
-**Q: Can I have multiple subtree repos?**  
-A: Yes! Run `1-extract-subtree.sh` multiple times with different folder selections.
+**Q: Can I have multiple extracted repos?**  
+A: Yes! Run `1-extract-repo.sh` multiple times with different folder selections.
 
 **Q: What about git history?**  
 A: Full history is preserved for extracted folders.
 
 **Q: Performance impact?**  
-A: Subtree repos are faster to clone and smaller in size.
+A: Extracted repos are faster to clone and smaller in size.
 
 **Q: Better than submodules?**  
 A: For this use case (selective extraction), yes! No submodule initialization needed.
@@ -345,9 +345,9 @@ A: Yes! It's completely generic - works with any Git repository.
 
 ## Summary
 
-1. **Extract**: `./1-extract-subtree.sh` (once, from main repo)
-2. **Pull updates**: `./2-sync-from-main.sh` (from subtree repo)
-3. **Push changes**: `./3-sync-to-main.sh` (from subtree repo)
+1. **Extract**: `./1-extract-repo.sh` (once, from main repo)
+2. **Pull updates**: `./2-sync-from-main.sh` (from extracted repo)
+3. **Push changes**: `./3-sync-to-main.sh` (from extracted repo)
 4. **Add folders**: Edit `folders-to-extract.txt` + run step 2
 
 That's it! 🚀

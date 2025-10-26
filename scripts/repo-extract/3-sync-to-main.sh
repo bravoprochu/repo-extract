@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Sync changes FROM subtree repository TO main repository
-# This pushes your changes in the subtree repo back to the main repo
+# Sync changes FROM extracted repository TO main repository
+# This pushes your changes in the extracted repo back to the main repo
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FOLDERS_FILE="$SCRIPT_DIR/folders-to-extract.txt"
@@ -19,15 +19,15 @@ echo ""
 # Check if we're in a git repository
 if [ ! -d ".git" ]; then
     echo "ERROR: Not in a git repository!"
-    echo "Please run this script from your subtree repository."
+    echo "Please run this script from your extracted repository."
     exit 1
 fi
 
 # Check if folders file exists
 if [ ! -f "$FOLDERS_FILE" ]; then
-    echo "ERROR: folders-to-extract.txt not found!"
-    echo "Please ensure folders-to-extract.txt is in the same directory as this script."
-    exit 1
+    echo "ERROR: folders-to-extract.txt not found"
+    echo "Please run this script from your extracted repository."
+    echo "This file should have been created by 1-extract-repo.sh"
 fi
 
 # Read folders from file (trim whitespace)
@@ -169,7 +169,7 @@ if [ ${#FOLDER_PATHS[@]} -gt 0 ]; then
         echo "  📁 Copying: $folder"
         HAS_FOLDER_CHANGES=true
         
-        # Remove old folder in main repo and copy new version from subtree repo
+        # Remove old folder in main repo and copy new version from extracted repo
         rm -rf "$folder"
         cp -r "$CURRENT_DIR/$folder" "$folder"
         git add "$folder"
@@ -188,11 +188,11 @@ if [ ${#FOLDER_PATHS[@]} -gt 0 ]; then
                 SYNCED_FOLDERS+=("${FOLDER_PATHS[$i]}")
             fi
         done
-        git commit -m "Sync folders from subtree: ${SYNCED_FOLDERS[*]}"
+        git commit -m "Sync folders from extracted repo: ${SYNCED_FOLDERS[*]}"
         echo "  ✓ Committed folder changes to main repo"
     fi
     
-    # Return to subtree repo
+    # Return to extracted repo
     cd "$CURRENT_DIR" || exit 1
 fi
 
@@ -220,7 +220,7 @@ if [ ${#FILE_PATHS[@]} -gt 0 ]; then
             SYNCED_FILES+=("$file")
             HAS_FILE_CHANGES=true
         else
-            echo "  ⚠️  File not found in subtree repo: $file"
+            echo "  ⚠️  File not found in extracted repo: $file"
         fi
     done
     
@@ -231,7 +231,7 @@ if [ ${#FILE_PATHS[@]} -gt 0 ]; then
         echo "⚠️  Remember to commit and push the file changes in the main repository:"
         echo "  cd $MAIN_REPO_PATH"
         echo "  git add ${SYNCED_FILES[*]}"
-        echo "  git commit -m 'Update files from subtree'"
+        echo "  git commit -m 'Update files from extracted repo'"
         echo "  git push"
     fi
 fi

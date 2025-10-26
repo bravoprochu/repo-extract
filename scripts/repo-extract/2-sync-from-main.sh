@@ -1,7 +1,11 @@
 #!/bin/bash
 set -e
 
-# Sync changes FROM main repository TO subtree repository
+#!/bin/bash
+set -e
+
+# Sync changes FROM main repository TO extracted repository
+# This pulls changes from the main repo into your extracted repo
 # This pulls the latest changes from the main repo for the selected folders
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -20,14 +24,15 @@ echo ""
 # Check if we're in a git repository
 if [ ! -d ".git" ]; then
     echo "ERROR: Not in a git repository!"
-    echo "Please run this script from your subtree repository."
+    echo "Please run this script from your extracted repository."
     exit 1
 fi
 
 # Check if folders file exists
 if [ ! -f "$FOLDERS_FILE" ]; then
-    echo "ERROR: folders-to-extract.txt not found!"
-    echo "Please ensure folders-to-extract.txt is in the same directory as this script."
+    echo "ERROR: folders-to-extract.txt not found"
+    echo "Please run this script from your extracted repository."
+    echo "This file should have been created by 1-extract-repo.sh"
     exit 1
 fi
 

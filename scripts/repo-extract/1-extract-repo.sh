@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Git Subtree Extraction Script
+# Git Repository Extraction Script
 # This script creates a new repository containing only selected folders from the current repo
 # while preserving the full git history for those folders.
 
@@ -10,7 +10,7 @@ MAIN_REPO_PATH="$(cd "$SCRIPT_DIR/../.." && pwd)"
 FOLDERS_FILE="$SCRIPT_DIR/folders-to-extract.txt"
 
 echo "=========================================="
-echo "Git Subtree Extraction Script"
+echo "Git Repository Extraction Script"
 echo "=========================================="
 echo ""
 echo "Source repository: $MAIN_REPO_PATH"
@@ -50,7 +50,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     
     # Create header
     cat > "$TEMP_FOLDERS_FILE" << EOF
-# List of folders and files to extract into the subtree repository
+# List of folders and files to extract into the extracted repository
 # Generated from: $MAIN_REPO_PATH
 # Scan depth: $DEPTH
 # Date: $(date)
@@ -307,7 +307,7 @@ fi
 # Create initial commit to avoid HEAD errors
 if ! git rev-parse HEAD >/dev/null 2>&1; then
     echo "Creating initial commit..."
-    echo "# Subtree Repository" > README.md
+    echo "# Extracted Repository" > README.md
     echo "" >> README.md
     echo "This repository contains selected folders from the main repository." >> README.md
     echo "Source: $MAIN_REPO_PATH" >> README.md
@@ -331,7 +331,7 @@ echo "Fetching from main repository (this may take a while)..."
 git fetch main-repo
 
 echo ""
-echo "Extracting folders using git subtree split..."
+echo "Extracting folders using file-based copying..."
 
 # Get the current branch from main repo
 MAIN_BRANCH=$(cd "$MAIN_REPO_PATH" && git branch --show-current)
@@ -371,7 +371,7 @@ if [ ${#FOLDER_PATHS[@]} -gt 0 ]; then
     fi
 fi
 
-# Copy individual files (git subtree doesn't work for files)
+# Copy individual files (individual file extraction)
 if [ ${#FILE_PATHS[@]} -gt 0 ]; then
     echo ""
     echo "Copying files..."
@@ -402,11 +402,11 @@ fi
 # Copy sync scripts to the new repo
 echo ""
 echo "Copying sync scripts to new repository..."
-mkdir -p "$NEW_REPO_PATH/scripts/subtree"
-cp "$SCRIPT_DIR/2-sync-from-main.sh" "$NEW_REPO_PATH/scripts/subtree/" 2>/dev/null || echo "Note: 2-sync-from-main.sh not found"
-cp "$SCRIPT_DIR/3-sync-to-main.sh" "$NEW_REPO_PATH/scripts/subtree/" 2>/dev/null || echo "Note: 3-sync-to-main.sh not found"
-chmod +x "$NEW_REPO_PATH/scripts/subtree"/*.sh 2>/dev/null || true
-git add scripts/subtree/*.sh 2>/dev/null || true
+mkdir -p "$NEW_REPO_PATH/scripts/repo-extract"
+cp "$SCRIPT_DIR/2-sync-from-main.sh" "$NEW_REPO_PATH/scripts/repo-extract/" 2>/dev/null || echo "Note: 2-sync-from-main.sh not found"
+cp "$SCRIPT_DIR/3-sync-to-main.sh" "$NEW_REPO_PATH/scripts/repo-extract/" 2>/dev/null || echo "Note: 3-sync-to-main.sh not found"
+chmod +x "$NEW_REPO_PATH/scripts/repo-extract"/*.sh 2>/dev/null || true
+git add scripts/repo-extract/*.sh 2>/dev/null || true
 git commit -m "Add sync scripts" 2>/dev/null || echo "Sync scripts already committed"
 
 echo ""
@@ -417,16 +417,16 @@ echo ""
 echo "New repository created at: $NEW_REPO_PATH"
 echo "Source repository: $MAIN_REPO_PATH"
 echo ""
-echo "Files created in subtree repo:"
+echo "Files created in extracted repo:"
 echo "  - folders-to-extract.txt (list of synced folders)"
-echo "  - scripts/subtree/2-sync-from-main.sh (pull updates from main repo)"
-echo "  - scripts/subtree/3-sync-to-main.sh (push changes to main repo)"
+echo "  - scripts/repo-extract/2-sync-from-main.sh (pull updates from main repo)"
+echo "  - scripts/repo-extract/3-sync-to-main.sh (push changes to main repo)"
 echo ""
 echo "Next steps:"
 echo "1. Review the extracted files: cd $NEW_REPO_PATH"
-echo "2. To pull updates from main repo: ./scripts/subtree/2-sync-from-main.sh"
-echo "3. To push your changes to main repo: ./scripts/subtree/3-sync-to-main.sh"
-echo "4. To add more folders: edit folders-to-extract.txt and run ./scripts/subtree/2-sync-from-main.sh"
+echo "2. To pull updates from main repo: ./scripts/repo-extract/2-sync-from-main.sh"
+echo "3. To push your changes to main repo: ./scripts/repo-extract/3-sync-to-main.sh"
+echo "4. To add more folders: edit folders-to-extract.txt and run ./scripts/repo-extract/2-sync-from-main.sh"
 echo "5. If you want to push to a remote (GitHub, GitLab, etc.):"
 echo "   - Create a new empty repository on your git hosting service"
 echo "   - Run: git remote add origin <your-remote-url>"

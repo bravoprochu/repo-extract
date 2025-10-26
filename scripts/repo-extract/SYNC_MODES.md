@@ -150,7 +150,7 @@ sync:package.json
 
 ### Converting Existing Repos
 
-1. Edit `folders-to-extract.txt` in your subtree repo
+1. Edit `folders-to-extract.txt` in your extracted repo
 2. Add prefixes (`s:` or `c:`) to each line
 3. Save the file
 4. Next time you run `2-sync-from-main.sh` or `3-sync-to-main.sh`, the new modes take effect

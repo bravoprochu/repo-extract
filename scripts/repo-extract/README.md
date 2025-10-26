@@ -62,7 +62,7 @@ copy:tsconfig.base.json
 
 ### Behavior
 
-**During Extraction (`1-extract-repo.sh`):**
+**During Extraction (`1-repo-extract.sh`):**
 
 - Both `sync` and `copy` items are copied to new repo
 - Sync modes are saved in `folders-to-extract.txt`
@@ -83,7 +83,7 @@ copy:tsconfig.base.json
 
 ```bash
 cd /path/to/your/main/repo
-./scripts/repo-extract/1-extract-repo.sh
+./scripts/repo-extract/1-repo-extract.sh
 ```
 
 **Interactive prompts:**
@@ -111,7 +111,7 @@ If you have `folders-to-extract.txt` already:
 
 ```bash
 cd /path/to/your/main/repo
-./scripts/repo-extract/1-extract-repo.sh
+./scripts/repo-extract/1-repo-extract.sh
 ```
 
 Select **n** for interactive mode, and it will use your existing file.
@@ -171,7 +171,7 @@ Sync:
 
 ## Files
 
-- **`1-extract-repo.sh`** - Creates extracted repo (run once from main repo)
+- **`1-repo-extract.sh`** - Creates extracted repo (run once from main repo)
 - **`2-sync-from-main.sh`** - Pull updates (run from extracted repo)
 - **`3-sync-to-main.sh`** - Push changes (run from extracted repo)
 - **`folders-to-extract.txt`** - List of synced folders (auto-generated)
@@ -205,7 +205,7 @@ You bridge the two repos by running sync scripts when needed, or automate with C
 ```bash
 # 1. Extract from main repo
 cd ~/my-main-repo
-./scripts/repo-extract/1-extract-repo.sh
+./scripts/repo-extract/1-repo-extract.sh
 
 # Choose interactive mode
 # Enter folders: libs/myapp, libs/shared/util, package.json
@@ -302,7 +302,7 @@ Run sync scripts FROM the extracted repository, not main repo.
 
 ### "Remote 'main-repo' not found"
 
-The extracted repo wasn't created with `1-extract-repo.sh`. Manually add:
+The extracted repo wasn't created with `1-repo-extract.sh`. Manually add:
 
 ```bash
 git remote add main-repo /path/to/main/repo
@@ -320,7 +320,7 @@ git remote add main-repo /path/to/main/repo
 ```bash
 rm -rf ~/my-extracted-project
 cd ~/my-main-repo
-./scripts/repo-extract/1-extract-repo.sh
+./scripts/repo-extract/1-repo-extract.sh
 ```
 
 ## FAQ
@@ -329,7 +329,7 @@ cd ~/my-main-repo
 A: No! Most devs only need the extracted repo. Only you (maintainer) or CI/CD needs both.
 
 **Q: Can I have multiple extracted repos?**  
-A: Yes! Run `1-extract-repo.sh` multiple times with different folder selections.
+A: Yes! Run `1-repo-extract.sh` multiple times with different folder selections.
 
 **Q: What about git history?**  
 A: Full history is preserved for extracted folders.
@@ -345,7 +345,7 @@ A: Yes! It's completely generic - works with any Git repository.
 
 ## Summary
 
-1. **Extract**: `./1-extract-repo.sh` (once, from main repo)
+1. **Extract**: `./1-repo-extract.sh` (once, from main repo)
 2. **Pull updates**: `./2-sync-from-main.sh` (from extracted repo)
 3. **Push changes**: `./3-sync-to-main.sh` (from extracted repo)
 4. **Add folders**: Edit `folders-to-extract.txt` + run step 2
